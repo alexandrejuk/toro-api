@@ -1,11 +1,13 @@
+const { pathOr } = require('ramda')
 const connDb = require('../database/db')
+const handleResponse = require('../utils')
 const collectionName = 'customers'
 
 module.exports.transfer = async (event) => {
   try {
     const db = await connDb()
     const collection = db.collection(collectionName)
-    const eventData = JSON.parse(event.body || '{}')
+    const eventData = JSON.parse(pathOr({}, ['body'], event))
     const customer = await collection.findOne({
       account: eventData.target.account,
     })
@@ -18,30 +20,19 @@ module.exports.transfer = async (event) => {
         { account: eventData.target.account },
         { $set: { checkingAccountAmount } },
       )
-      const response = {
-        statusCode: 200,
-        body: JSON.stringify({ 
-          message: `processed By ${eventData.event.toLowerCase()}`,
-        }),
-      }
 
-      return response
+      return handleResponse(
+        200,
+        { message: `processed By ${eventData.event.toLowerCase()}` },
+      )
     } else {
-      const response = {
-        statusCode: 400,
-        body: JSON.stringify({
-          /* eslint-disable max-len */
-          error: 'transaction rejected because the CPF does not match the registered account.',
-        }),
-      }
-      return response
+      return handleResponse(
+        400,
+        /* eslint-disable max-len */
+        { message: 'transaction rejected because the CPF does not match the registered account.' },
+      )
     }
   } catch (error) {
-    const response = {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'internal Server Error' }),
-    }
-
-    return response
+    return handleResponse(500, { message: 'internal Server Error' })
   }
 }

@@ -1,6 +1,8 @@
 const { ObjectId } = require('mongodb')
+const { pathOr } = require('ramda')
 const connDb = require('../database/db')
 const { customerPosition, checkBalanceAvailability } = require('./utils')
+const handleResponse = require('../utils')
 
 const collectionName = 'customers'
 const collectionStockName = 'stocks'
@@ -10,7 +12,7 @@ module.exports.order = async (event) => {
     const db = await connDb()
     const collection = db.collection(collectionName)
     const collectionStock = db.collection(collectionStockName)
-    const order = JSON.parse(event.body || '{}')
+    const order = JSON.parse(pathOr({}, ['body'], event))
     const customerId = order.customerId
     const filter = { _id: new ObjectId(customerId) }
 
@@ -21,10 +23,10 @@ module.exports.order = async (event) => {
     ])
     
     if (!customer || !stock) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: 'invalid customer ID or stock symbol.' }),
-      }
+      return handleResponse(
+        400, 
+        { message: 'invalid customer ID or stock symbol.' },
+      )
     }
     const isValid = checkBalanceAvailability(
       customer.checkingAccountAmount,
@@ -38,24 +40,17 @@ module.exports.order = async (event) => {
         { $set: customerPosition(update) }
       )
 
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ 
-          message: 'your request has been successfully processed.',
-        }),
-      }
+      return handleResponse(
+        200,
+        { message: 'your request has been successfully processed.' },
+      )
     } else {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({
-          message: 'insufficient balance. Purchase cannot be made.',
-        }),
-      }
+      return handleResponse(
+        400, 
+        { message: 'insufficient balance. Purchase cannot be made.' },
+      )
     }
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: 'internal error' }),
-    }
+    return handleResponse(500, { message: 'internal Server Error' })
   }
 }

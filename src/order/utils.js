@@ -13,7 +13,7 @@ const buildAvg = (position, order, stock) => {
   return { amount, currentPrice }
 }
 
-const buildPosition = ({ customer = {}, stock = {}, order = {} }) => {
+const buildPosition = ({ customer, stock, order }) => {
   const positions = pathOr([], ['positions'], customer)
   const findStock = positions.find(({ symbol }) => symbol === order.symbol)
   if(findStock) {
@@ -34,7 +34,7 @@ const buildPosition = ({ customer = {}, stock = {}, order = {} }) => {
   return concat(positions, newPositionOrder)
 }
 
-const DecrementBalance = ({ customer = {}, stock = {}, order = {} }) => {
+const DecrementBalance = ({ customer, stock, order }) => {
   return (customer.checkingAccountAmount - (order.amount * stock.currentPrice))
 }
 

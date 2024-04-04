@@ -102,7 +102,7 @@ describe('transfer function', () => {
     const response = await transfer(event)
     const responseBody = JSON.parse(response.body)
 
-    expect(responseBody.error).toEqual('transaction rejected because the CPF does not match the registered account.')
+    expect(responseBody.message).toEqual('transaction rejected because the CPF does not match the registered account.')
   })
 
   it('should return an internal server error if body is invalid JSON', async () => {
@@ -113,6 +113,6 @@ describe('transfer function', () => {
     const response = await transfer(event)
     const responseBody = JSON.parse(response.body)
 
-    expect(responseBody.error).toEqual('internal Server Error')
+    expect(responseBody.message).toEqual('internal Server Error')
   })
 })

@@ -86,7 +86,7 @@ describe('order function', () => {
     expect(responseBody.message).toEqual('invalid customer ID or stock symbol.')
   })
 
-  it('should return error message if order is not processed successfully due to internal error', async () => {
+  it('should return error message if order is not processed successfully due to internal Server Error', async () => {
     connDb.mockResolvedValue({ 
       collection: jest.fn().mockReturnValueOnce({})
     })
@@ -94,6 +94,6 @@ describe('order function', () => {
     const response = await order(event)
     const responseBody = JSON.parse(response.body)
 
-    expect(responseBody.message).toEqual('internal error')
+    expect(responseBody.message).toEqual('internal Server Error')
   })
 })
