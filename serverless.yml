@@ -1,0 +1,26 @@
+service: brokerage-service
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: sa-east-1
+
+functions:
+  trends:
+    handler: src/stocks/stocks.stocks
+    events:
+      - httpApi:
+          path: /trends
+          method: GET
+  spbevents:
+    handler: src/transfer/transfer.transfer
+    events:
+      - httpApi:
+          path: /spb/events
+          method: POST
+  order:
+    handler: src/order/order.order
+    events:
+      - httpApi:
+          path: /orders
+          method: POST
