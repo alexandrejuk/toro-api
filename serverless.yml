@@ -12,15 +12,23 @@ functions:
       - httpApi:
           path: /trends
           method: GET
+    environment:
+      MONGODB_URI: ${env:MONGODB_URI}
+
   spbevents:
     handler: src/transfer/transfer.transfer
     events:
       - httpApi:
           path: /spb/events
           method: POST
+    environment:
+      MONGODB_URI: ${env:MONGODB_URI}
+
   order:
     handler: src/order/order.order
     events:
       - httpApi:
           path: /orders
           method: POST
+    environment:
+      MONGODB_URI: ${env:MONGODB_URI}
