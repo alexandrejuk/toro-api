@@ -1,0 +1,4 @@
+**/*.test.js
+**/*.spec.js
+node_modules/
+coverage/

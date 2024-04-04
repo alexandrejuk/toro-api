@@ -1,15 +1,15 @@
-const connDb = require('../database/db');
-const collectionName = "stocks"
+const connDb = require('../database/db')
+const collectionName = 'stocks'
 
-module.exports.stocks = async (event) => {
+module.exports.stocks = async () => {
   const db = await connDb()
-  const collection = db.collection(collectionName);
-  const trends = await collection.find({}).toArray();
+  const collection = db.collection(collectionName)
+  const trends = await collection.find({}).toArray()
 
   const response = {
     statusCode: 200,
     body: JSON.stringify(trends),
-  };
+  }
 
-  return response;
-};
+  return response
+}
