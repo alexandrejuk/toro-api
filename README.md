@@ -70,10 +70,23 @@ npm test
 
 O projeto possui três endpoints:
 
-1. **GET /trends**: Retorna os cinco melhores ações da bolsa de valores.
-2. **POST /spb/events**: Realiza transferências de dinheiro entre contas bancárias.
-2. **POST /orders**: Realiza compra de ações
+1. **GET /trends**: Retorna os cinco melhores ações da bolsa de valores. Para o endpoint **POST /trends**, o curl específico seria:
 
+```bash
+curl -X GET https://ich5p4r08l.execute-api.sa-east-1.amazonaws.com/trends
+```
+
+2. **POST /spb/events**: Realiza transferências de dinheiro entre contas bancárias. Para o endpoint **POST /spb/events**, o curl com o payload específico seria:
+
+```bash
+curl -X POST https://ich5p4r08l.execute-api.sa-east-1.amazonaws.com/spb/events -d '{"event": "TRANSFER", "target": {"bank": "352", "branch": "0001", "account": "300123"}, "origin": {"bank": "033", "branch": "03312", "cpf": "12345678901"}, "amount": 1000}'
+```
+
+3. **POST /orders**: Realiza compra de ações. Para o endpoint **POST /orders**, o curl com o payload específico seria:
+
+```bash
+curl -X POST https://ich5p4r08l.execute-api.sa-east-1.amazonaws.com/orders -d '{"symbol": "TORO4", "amount": 3, "customerId": "<customerId>"}'
+```
 
 ## Autor
 [Alexandre Soares](https://github.com/alexandrejuk)
