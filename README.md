@@ -36,6 +36,10 @@ npm install
 serverless deploy
 ```
 
+5. Link do banco de teste
+```
+mongodb+srv://toro:toro@cluster0.naxdk9d.mongodb.net/toro
+```
 ### Execução
 
 Para executar as funções Lambda localmente, você pode usar o framework Serverless.
