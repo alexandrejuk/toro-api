@@ -58,23 +58,6 @@ Importando a coleção de stocks:
 ```
 mongoimport --host localhost --db toro --collection stocks --file ./backup_database/stocks.json
 ```
-
-1. Execute a função que fornece as cinco melhores ações:
-
-```
-sls invoke local -f trends
-```
-
-2. Execute a função que realiza transferências de dinheiro:
-
-```
-sls invoke local -f spbevents --data '{"body": {"event": "TRANSFER", "target": {"bank": "352", "branch": "0001", "account": "300123"}, "origin": {"bank": "033", "branch": "03312", "cpf": "98765432101"}, "amount": 1000}}'
-```
-
-3. Execute a função que realiza a compra de ações:
-
-```
-sls invoke local -f order --data '{"body": {"symbol": "TORO4", "amount": 3, "customerId": "660d9bc631d2a55b5db5083a"}}'
 ```
 
 #### Testes
